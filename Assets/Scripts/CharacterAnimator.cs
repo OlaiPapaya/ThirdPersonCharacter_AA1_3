@@ -39,6 +39,13 @@ public class CharacterAnimator : MonoBehaviour
         FixLookat();
 
         gunPivot.LookAt(lookat);
+
+        SetIK();
+    }
+
+    private void SetIK()
+    {
+        
     }
 
     private void FixLookat()
