@@ -30,22 +30,36 @@ public class CharacterAnimator : MonoBehaviour
     }
     void Update()
     {
-        anim.SetFloat("Sideways", cm.velocity.x / cm.speedMovement);
-        anim.SetFloat("Upwards", cm.velocity.y / cm.speedMovement);
-        anim.SetFloat("Forward", cm.velocity.z / cm.speedMovement);
+        anim.SetFloat("Sideways",  Mathf.Clamp01(cm.velocity.x / cm.speedMovement));
+        anim.SetFloat("Upwards", Mathf.Clamp01(cm.velocity.y / cm.speedMovement));
+        anim.SetFloat("Forward", Mathf.Clamp01(cm.velocity.z / cm.speedMovement));
         anim.SetFloat("Rotation", cm.velocityAngular * rotationScale);
         anim.SetBool("Grounded", gd.grounded);
 
         FixLookat();
 
         gunPivot.LookAt(lookat);
-
-        SetIK();
     }
 
-    private void SetIK()
+    private void OnAnimatorIK(int layerIndex)
     {
-        
+        anim.SetLookAtWeight(1);
+        anim.SetLookAtPosition(lookat);
+
+        if (gunRightHand != null)
+        {
+            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+            anim.SetIKPosition(AvatarIKGoal.RightHand, gunRightHand.position);
+            anim.SetIKRotation(AvatarIKGoal.RightHand, gunRightHand.rotation);
+        }
+        if (gunLeftHand != null)
+        {
+            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+            anim.SetIKPosition(AvatarIKGoal.LeftHand, gunLeftHand.position);
+            anim.SetIKRotation(AvatarIKGoal.LeftHand, gunLeftHand.rotation);
+        }
     }
 
     private void FixLookat()
