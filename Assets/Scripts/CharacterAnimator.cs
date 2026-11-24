@@ -30,9 +30,9 @@ public class CharacterAnimator : MonoBehaviour
     }
     void Update()
     {
-        anim.SetFloat("Sideways", cm.velocity.x);
-        anim.SetFloat("Upwards", cm.velocity.y);
-        anim.SetFloat("Forward", cm.velocity.z);
+        anim.SetFloat("Sideways", cm.velocity.x / cm.speedMovement);
+        anim.SetFloat("Upwards", cm.velocity.y / cm.speedMovement);
+        anim.SetFloat("Forward", cm.velocity.z / cm.speedMovement);
         anim.SetFloat("Rotation", cm.velocityAngular * rotationScale);
         anim.SetBool("Grounded", gd.grounded);
 
