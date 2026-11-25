@@ -28,10 +28,12 @@ public class GenericGun : MonoBehaviour
     Vector3 originalPosition;
     Quaternion originalRotation;
     private InputSystem_Actions input;
+    private float lastShotTime = float.MinValue;
+    private float lastReloadTime = float.MinValue;
     private void Start()
     {
         input = new();
-        input.Player.Attack.Enable();
+        input.Player.Enable();
 
         originalPosition = transform.localPosition;
         originalRotation = transform.localRotation;
@@ -44,9 +46,9 @@ public class GenericGun : MonoBehaviour
 
         PlaceRealAim();
 
-        if (input.Player.Attack.WasPressedThisFrame()) Fire();
+        HandleFire();
     }
-    public void PlaceRealAim()
+    void PlaceRealAim()
     {
         // These references cannot be null
         if (!canvasTransform || !realAim || !firePoint) return;
@@ -78,6 +80,28 @@ public class GenericGun : MonoBehaviour
         // Once we have the local UI's coordinate system position, we assign it:
         realAim.anchoredPosition = anchoredPoint;
     }
+    void HandleFire()
+    {
+        if (input.Player.Attack.IsPressed() &&
+            Time.time - lastShotTime > fireRate &&
+            Time.time - lastReloadTime > reloadTime)
+        {
+            Fire();
+            lastShotTime = Time.time;
+            clipCurrent--;
+            if (clipCurrent <= 0)
+            {
+                Reload();
+            }
+        }
+        if (input.Player.Reload.WasPressedThisFrame())
+            Reload();
+    }
+    void Reload()
+    {
+        clipCurrent = clipMax;
+        lastReloadTime = Time.time;
+    }
     public void Fire()
     {
         Destroy(Instantiate(bullet, firePoint.position, firePoint.rotation), 10);
@@ -92,6 +116,6 @@ public class GenericGun : MonoBehaviour
     }
     private void OnDestroy()
     {
-        input.Player.Attack.Disable();
+        input.Player.Disable();
     }
 }
