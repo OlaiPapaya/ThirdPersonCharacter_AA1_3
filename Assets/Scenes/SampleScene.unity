@@ -13814,6 +13814,37 @@ ReflectionProbe:
   m_UseOcclusionCulling: 1
   m_Importance: 1
   m_CustomBakedTexture: {fileID: 0}
+--- !u!1 &1481875368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1481875369}
+  m_Layer: 0
+  m_Name: BulletsContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1481875369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481875368}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1484007475
 GameObject:
   m_ObjectHideFlags: 0
@@ -17018,6 +17049,7 @@ MonoBehaviour:
       m_Calls: []
   firePoint: {fileID: 545399007}
   bullet: {fileID: 3810806582412894877, guid: 257a5f3f12dfce4478c4a8f4b960e1d2, type: 3}
+  bulletsContainer: {fileID: 1481875369}
   maxFireDistance: 1000
   positionRecover: 15
   rotationRecover: 20
@@ -20319,3 +20351,4 @@ SceneRoots:
   - {fileID: 1089316526}
   - {fileID: 782628380}
   - {fileID: 1644645377}
+  - {fileID: 1481875369}

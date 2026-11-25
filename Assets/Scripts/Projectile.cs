@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     public float radius = .1f;
     [HideInInspector]
     public Rigidbody rb;
+    [SerializeField] private GameObject decalPrefab;
 
     Vector3 lastPos;
     void Start()
@@ -45,6 +46,9 @@ public class Projectile : MonoBehaviour
         {
             hit.rigidbody.AddForceAtPosition(rb.linearVelocity * rb.mass * collisionForceMultiplier, this.transform.position);
         }
+        GameObject decal = Instantiate(decalPrefab, hit.point, Quaternion.identity, hit.transform);
+        decal.transform.forward = hit.normal;
+        Destroy(decal, 5);
         Destroy(gameObject);
     }
 }
