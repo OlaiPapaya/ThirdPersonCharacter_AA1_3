@@ -17018,10 +17018,13 @@ MonoBehaviour:
       m_Calls: []
   firePoint: {fileID: 545399007}
   bullet: {fileID: 3810806582412894877, guid: 257a5f3f12dfce4478c4a8f4b960e1d2, type: 3}
+  maxFireDistance: 1000
   positionRecover: 15
   rotationRecover: 20
   knockbackPosition: {x: 0.01, y: 0.1, z: -0.2}
   knockbackRotation: {x: 35, y: 5, z: 5}
+  realAim: {fileID: 1591535079}
+  canvasTransform: {fileID: 782628380}
 --- !u!54 &1780671018
 Rigidbody:
   m_ObjectHideFlags: 0

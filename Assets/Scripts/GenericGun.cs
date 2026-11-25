@@ -16,11 +16,15 @@ public class GenericGun : MonoBehaviour
     public UnityEvent onFire;
     public Transform firePoint;
     public GameObject bullet;
+    public float maxFireDistance = 1000f;
     [Header("Animation")]
     public float positionRecover;
     public float rotationRecover;
     public Vector3 knockbackPosition;
     public Vector3 knockbackRotation;
+    [Header("UI")]
+    public RectTransform realAim;
+    public RectTransform canvasTransform;
     Vector3 originalPosition;
     Quaternion originalRotation;
     private void Start()
@@ -33,6 +37,33 @@ public class GenericGun : MonoBehaviour
     {
         transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, positionRecover * Time.deltaTime);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, rotationRecover * Time.deltaTime);
+
+        PlaceRealAim();
+    }
+    public void PlaceRealAim()
+    {
+        // These references cannot be null
+        if (!canvasTransform || !realAim || !firePoint) return;
+
+        Vector3 pointPosition;
+
+        // If the raycast doesn't hit anything, we don't move the RealAim object
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hit, maxFireDistance))
+        {
+            pointPosition = hit.point;
+        }
+        else
+        {
+            pointPosition = firePoint.position + firePoint.forward * maxFireDistance;
+        }
+
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, pointPosition);
+
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasTransform, screenPoint, null, out Vector2 anchoredPoint))
+            return;
+
+        realAim.anchoredPosition = anchoredPoint;
     }
     public void Fire()
     {
