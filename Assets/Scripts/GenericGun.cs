@@ -15,8 +15,7 @@ public class GenericGun : MonoBehaviour
     [Header("Firing")]
     public UnityEvent onFire;
     public Transform firePoint;
-    public GameObject bullet;
-    public Transform bulletsContainer;
+    public BulletsPool bulletsPool;
     public float maxFireDistance = 1000f;
     [Header("Animation")]
     public float positionRecover;
@@ -105,7 +104,10 @@ public class GenericGun : MonoBehaviour
     }
     public void Fire()
     {
-        Destroy(Instantiate(bullet, firePoint.position, firePoint.rotation, bulletsContainer == null ? null : bulletsContainer), 10);
+        bulletsPool.TimedDestroyBullet(
+            bulletsPool.CreateBullet(firePoint.position, firePoint.rotation),
+            3);
+
         onFire.Invoke();
         StartCoroutine(Knockback_Corutine());
     }

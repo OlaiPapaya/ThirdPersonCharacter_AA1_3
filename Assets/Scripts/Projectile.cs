@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -13,15 +14,46 @@ public class Projectile : MonoBehaviour
     [HideInInspector]
     public Rigidbody rb;
     [SerializeField] private GameObject decalPrefab;
+    [SerializeField] private List<ParticleSystem> particles;
+    [SerializeField] private TrailRenderer trail;
 
     Vector3 lastPos;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.AddRelativeForce(new Vector3(Random.Range(forceMin.x, forceMax.x), Random.Range(forceMin.y, forceMax.y), Random.Range(forceMin.z, forceMax.z)));
-        Destroy(gameObject, disappearTime);
+        
+    }
+
+    public void Init()
+    {
+        foreach (ParticleSystem particle in particles)
+        {
+            particle.Stop();
+            particle.Clear();
+        }
+
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
+        if (trail == null) trail = GetComponent<TrailRenderer>();
+        trail.Clear();
+
+        if (!rb) rb = GetComponent<Rigidbody>();
+
+        // Push the new transform to the physics body BEFORE applying force
+        Physics.SyncTransforms();
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.AddRelativeForce(new Vector3(
+            Random.Range(forceMin.x, forceMax.x),
+            Random.Range(forceMin.y, forceMax.y),
+            Random.Range(forceMin.z, forceMax.z)));
+
         lastPos = transform.position;
-        transform.parent = null;
+
+        foreach (ParticleSystem particle in particles)
+            particle.Play();
     }
 
     private void FixedUpdate()
@@ -49,6 +81,5 @@ public class Projectile : MonoBehaviour
         GameObject decal = Instantiate(decalPrefab, hit.point, Quaternion.identity, hit.transform);
         decal.transform.forward = hit.normal;
         Destroy(decal, 5);
-        Destroy(gameObject);
     }
 }

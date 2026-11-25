@@ -5220,6 +5220,9 @@ MonoBehaviour:
   radius: 0.1
   rb: {fileID: 0}
   decalPrefab: {fileID: 802939741174777362, guid: 5711a24ec9f4fed488a8630eae21dde6, type: 3}
+  particles:
+  - {fileID: 2143158413358230152}
+  - {fileID: 6599299595802082316}
 --- !u!96 &7661018759388145756
 TrailRenderer:
   serializedVersion: 4

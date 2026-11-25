@@ -13823,6 +13823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1481875369}
+  - component: {fileID: 1481875370}
   m_Layer: 0
   m_Name: BulletsContainer
   m_TagString: Untagged
@@ -13845,6 +13846,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1481875370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481875368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0db98a56dd523e49ab737b51bfcb4c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulletsPool
+  bulletPrefab: {fileID: 3810806582412894877, guid: 257a5f3f12dfce4478c4a8f4b960e1d2, type: 3}
 --- !u!1 &1484007475
 GameObject:
   m_ObjectHideFlags: 0
@@ -17048,8 +17062,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   firePoint: {fileID: 545399007}
-  bullet: {fileID: 3810806582412894877, guid: 257a5f3f12dfce4478c4a8f4b960e1d2, type: 3}
-  bulletsContainer: {fileID: 1481875369}
+  bulletsPool: {fileID: 1481875370}
   maxFireDistance: 1000
   positionRecover: 15
   rotationRecover: 20
