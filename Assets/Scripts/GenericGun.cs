@@ -27,8 +27,12 @@ public class GenericGun : MonoBehaviour
     public RectTransform canvasTransform;
     Vector3 originalPosition;
     Quaternion originalRotation;
+    private InputSystem_Actions input;
     private void Start()
     {
+        input = new();
+        input.Player.Attack.Enable();
+
         originalPosition = transform.localPosition;
         originalRotation = transform.localRotation;
     }
@@ -39,6 +43,8 @@ public class GenericGun : MonoBehaviour
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, rotationRecover * Time.deltaTime);
 
         PlaceRealAim();
+
+        if (input.Player.Attack.WasPressedThisFrame()) Fire();
     }
     public void PlaceRealAim()
     {
@@ -47,22 +53,29 @@ public class GenericGun : MonoBehaviour
 
         Vector3 pointPosition;
 
-        // If the raycast doesn't hit anything, we don't move the RealAim object
+        // Raycast from the weapon fire point to its forward direction
         if (Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hit, maxFireDistance))
         {
+            // If the raycast hit something, that's where we're pointing.
             pointPosition = hit.point;
         }
         else
         {
+            // If not, we'll just point forward, to the max shooting distance.
             pointPosition = firePoint.position + firePoint.forward * maxFireDistance;
         }
 
+        // We convert the world position into a screen position.
         Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, pointPosition);
 
+        // We convert the screen position to the local UI object's coordinate system,
+        // checking if the conversion worked.
+        // https://docs.unity.com/en-us/engine/6000.6/script-reference/unityengine/recttransformutility/screenpointtoworldpointinrectangle
         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasTransform, screenPoint, null, out Vector2 anchoredPoint))
             return;
 
+        // Once we have the local UI's coordinate system position, we assign it:
         realAim.anchoredPosition = anchoredPoint;
     }
     public void Fire()
@@ -76,5 +89,9 @@ public class GenericGun : MonoBehaviour
         yield return null;
         transform.localPosition -= new Vector3(Random.Range(-knockbackPosition.x, knockbackPosition.x), Random.Range(0, knockbackPosition.y), Random.Range(-knockbackPosition.z, -knockbackPosition.z * .5f));
         transform.localEulerAngles -= new Vector3(Random.Range(knockbackRotation.x * 0.5f, knockbackRotation.x), Random.Range(-knockbackRotation.y, knockbackRotation.y), Random.Range(-knockbackRotation.z, knockbackRotation.z));
+    }
+    private void OnDestroy()
+    {
+        input.Player.Attack.Disable();
     }
 }
